@@ -115,6 +115,8 @@ program machining_simulator
     write(20, *) 'Approx. Temperature Rise (K): ', result%delta_T
     write(20, *) 'Thermal Zone: ', trim(result%temp_zone)
     write(20, *) 'Machinability Index (proxy): ', result%machinability_index
+    write(20, *) 'Estimated Surface Roughness Ra (µm): ', result%Ra
+    write(20, *) 'Thermal Damage Risk: ', trim(result%thermal_damage_risk)
     close(20)
     print *, 'Results saved to ', trim(output_filename)
   end if
@@ -173,8 +175,25 @@ contains
     result%Vs = input%Vc / cos_phi
     result%delta_T = (eta * result%Fs * result%Vs) / (mat%density * mat%Cp * input%Vc)
     result%power = input%Fc * input%Vc
+    call classify_thermal_damage(result%delta_T, result%thermal_damage_risk)
+    result%Ra = input%t1 / tan(result%phi)
     call classify_temperature_zone(result%delta_T, result%temp_zone)
     result%machinability_index = compute_machinability_index(result%SCE)
+  end subroutine
+
+  subroutine classify_thermal_damage(delta_T, risk)
+    real(8), intent(in) :: delta_T
+    character(len=30), intent(out) :: risk
+
+    if (delta_T < 200.0d0) then
+      risk = 'No risk'
+    elseif (delta_T < 400.0d0) then
+      risk = 'Moderate risk'
+    elseif (delta_T < 600.0d0) then
+      risk = 'High risk'
+    else
+      risk = 'Severe risk'
+    end if
   end subroutine
 
   subroutine print_results(mat, result)
@@ -195,6 +214,8 @@ contains
     print *, 'Approx. Temperature Rise (K): ', result%delta_T
     print *, 'Thermal Zone: ', trim(result%temp_zone)
     print *, 'Machinability Index (proxy): ', result%machinability_index
+    print *, 'Estimated Surface Roughness Ra (µm): ', result%Ra
+    print *, 'Thermal Damage Risk: ', trim(result%thermal_damage_risk)
     print *, '-----------------------------------------'
   end subroutine
 

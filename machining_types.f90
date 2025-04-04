@@ -16,6 +16,8 @@ module machining_types
   type :: MachiningResults
     real(8) :: phi, phi_deg, chip_ratio
     real(8) :: Fs, Fn, shear_area, tau_s, SCE, Vs, delta_T, MRR, power, machinability_index
+    real(8) :: Ra
+    character(len=30) :: thermal_damage_risk
     character(len=20) :: temp_zone
   end type MachiningResults
 end module machining_types
