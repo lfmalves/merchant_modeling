@@ -1,0 +1,57 @@
+category,material,density,Cp
+Steel,Carbon Steel 1018,7870,486
+Steel,Carbon Steel 1045,7850,480
+Steel,Tool Steel A2,7700,460
+Steel,Tool Steel D2,7700,460
+Steel,Mild Steel,7850,510
+Stainless Steel,Stainless Steel 303,8000,500
+Stainless Steel,Stainless Steel 304,8000,500
+Stainless Steel,Stainless Steel 316,8000,500
+Stainless Steel,Stainless Steel 420,7750,460
+Cast Iron,Gray Cast Iron,7100,550
+Aluminium,Aluminium 2024,2780,875
+Aluminium,Aluminium 6061,2700,896
+Aluminium,Aluminium 7075,2810,960
+Aluminium,Aluminium 5083,2650,900
+Aluminium,Aluminium (Pure),2700,900
+Copper,Copper C110 (Pure),8960,385
+Copper,Beryllium Copper C17200,8250,419
+Brass,Brass C36000 (Free-machining),8500,380
+Brass,Brass C26000 (Cartridge Brass),8530,380
+Bronze,Bronze (Generic),8300,400
+Titanium,Titanium Grade 2,4500,522
+Titanium,Titanium Grade 5 (Ti-6Al-4V),4430,560
+Superalloys,Inconel 625,8440,410
+Superalloys,Inconel 718,8190,435
+Superalloys,Hastelloy C-276,8890,420
+Superalloys,Monel 400,8800,427
+Zircaloy,Zircaloy-2,6550,285
+Zircaloy,Zircaloy-4,6560,290
+Nickel,Nickel 200,8900,440
+Nickel,Nichrome (80% Ni - 20% Cr),8400,460
+Magnesium,Magnesium AZ31B,1738,1040
+Magnesium,Magnesium AM60,1800,1020
+Plastics,PTFE (Teflon),2200,1000
+Plastics,Delrin (Acetal),1410,1460
+Plastics,Polycarbonate,1200,1200
+Plastics,HDPE,950,2300
+Plastics,PEEK,1320,1400
+Plastics,Nylon 6,1140,1700
+Plastics,ABS,1040,1300
+Plastics,Acrylic (PMMA),1180,1470
+Metals,Lead,11340,130
+Metals,Zinc,7135,390
+Metals,Tin,7310,217
+Metals,Molybdenum,10280,250
+Metals,Tungsten,19300,134
+Metals,Bismuth,9750,130
+Metals,Cobalt,8900,420
+Metals,Chromium,7190,460
+Metals,Manganese,7430,480
+Metals,Vanadium,6110,490
+Metals,Antimony,6690,210
+Metals,Beryllium,1850,1825
+Composites,G10 (Glass Epoxy),1850,1100
+Composites,CFRP (Carbon Fiber Reinforced Polymer),1600,900
+Ceramics,Alumina (Al₂O₃),3900,880
+Ceramics,Silicon Carbide (SiC),3200,670
