@@ -61,7 +61,6 @@ program machining_simulator
   if (cat_choice < 1 .or. cat_choice > n_categories) stop 'Invalid category selection.'
   selected_category = trim(unique_categories(cat_choice))
 
-  ! Filter materials
   n_filtered = 0
   do i = 1, n_materials
     if (trim(all_materials(i)%category) == selected_category) then
