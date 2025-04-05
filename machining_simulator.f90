@@ -1,6 +1,7 @@
 program machining_simulator
   use machining_types
   use machining_utils
+  use machining_model
   implicit none
 
   integer, parameter :: max_materials = 100
@@ -145,78 +146,28 @@ contains
     read(part4, *) cp
   end subroutine
 
-  subroutine calculate_machining(input, mat, result)
-    use machining_types
-    use machining_utils
-    type(MachiningInputs), intent(in) :: input
-    type(Material), intent(in) :: mat
-    type(MachiningResults), intent(out) :: result
-    real(8) :: eta, rake_angle_rad, beta
-    real(8) :: cos_phi, sin_phi, cos_beta_phi, sin_beta_phi
-
-    eta = 0.8d0
-    rake_angle_rad = input%rake_angle_deg * atan(1.0d0) / 45.0d0
-    beta = atan(input%mu)
-    result%chip_ratio = input%t1 / input%t2
-    result%phi = 0.25d0 * 4.0d0 * atan(1.0d0) - 0.5d0 * (beta - rake_angle_rad)
-    result%phi_deg = result%phi * 45.0d0 / atan(1.0d0)
-
-    cos_phi = cos(result%phi)
-    sin_phi = sin(result%phi)
-    cos_beta_phi = cos(beta - result%phi)
-    sin_beta_phi = sin(beta - result%phi)
-
-    result%Fs = input%Fc * cos_beta_phi - input%Ft * sin_beta_phi
-    result%Fn = input%Fc * sin_beta_phi + input%Ft * cos_beta_phi
-    result%shear_area = (input%t1 / sin_phi) * input%w
-    result%tau_s = result%Fs / result%shear_area
-    result%MRR = input%t1 * input%w * input%Vc
-    result%SCE = input%Fc * input%Vc / result%MRR
-    result%Vs = input%Vc / cos_phi
-    result%delta_T = (eta * result%Fs * result%Vs) / (mat%density * mat%Cp * input%Vc)
-    result%power = input%Fc * input%Vc
-    call classify_thermal_damage(result%delta_T, result%thermal_damage_risk)
-    result%Ra = input%t1 / tan(result%phi)
-    call classify_temperature_zone(result%delta_T, result%temp_zone)
-    result%machinability_index = compute_machinability_index(result%SCE)
-  end subroutine
-
-  subroutine classify_thermal_damage(delta_T, risk)
-    real(8), intent(in) :: delta_T
-    character(len=30), intent(out) :: risk
-
-    if (delta_T < 200.0d0) then
-      risk = 'No risk'
-    elseif (delta_T < 400.0d0) then
-      risk = 'Moderate risk'
-    elseif (delta_T < 600.0d0) then
-      risk = 'High risk'
-    else
-      risk = 'Severe risk'
-    end if
-  end subroutine
-
   subroutine print_results(mat, result)
     use machining_types
+    implicit none
     type(Material), intent(in) :: mat
     type(MachiningResults), intent(in) :: result
-    print *, '-----------------------------------------'
-    print *, 'Material selected: ', trim(mat%name)
-    print *, 'Density (kg/m^3): ', mat%density
-    print *, 'Specific Heat (J/kg.K): ', mat%Cp
-    print *, 'Shear angle phi (deg): ', result%phi_deg
-    print *, 'Chip ratio r = t1 / t2: ', result%chip_ratio
-    print *, 'Shear force Fs (N): ', result%Fs
-    print *, 'Normal force Fn (N): ', result%Fn
-    print *, 'Shear stress tau_s (MPa): ', result%tau_s
-    print *, 'Specific Cutting Energy (J/mm^3): ', result%SCE
-    print *, 'Cutting Power (W): ', result%power
-    print *, 'Approx. Temperature Rise (K): ', result%delta_T
-    print *, 'Thermal Zone: ', trim(result%temp_zone)
-    print *, 'Machinability Index (proxy): ', result%machinability_index
-    print *, 'Estimated Surface Roughness Ra (µm): ', result%Ra
-    print *, 'Thermal Damage Risk: ', trim(result%thermal_damage_risk)
-    print *, '-----------------------------------------'
+
+    print *, '--------------------------------------------------------------------------'
+    write(*,'(A45, F20.10)') 'Density (kg/m^3):', mat%density
+    write(*,'(A45, F20.10)') 'Specific Heat (J/kg·K):', mat%Cp
+    write(*,'(A45, F20.10)') 'Shear angle phi (deg):', result%phi_deg
+    write(*,'(A45, F20.10)') 'Chip ratio r = t1 / t2:', result%chip_ratio
+    write(*,'(A45, F20.10)') 'Shear force Fs (N):', result%Fs
+    write(*,'(A45, F20.10)') 'Normal force Fn (N):', result%Fn
+    write(*,'(A45, F20.10)') 'Shear stress tau_s (MPa):', result%tau_s
+    write(*,'(A45, F20.10)') 'Specific Cutting Energy (J/mm^3):', result%SCE
+    write(*,'(A45, F20.10)') 'Cutting Power (W):', result%power
+    write(*,'(A45, ES20.10)') 'Approx. Temperature Rise (K):', result%delta_T
+    write(*,'(A45, F20.10)') 'Machinability Index (proxy):', result%machinability_index
+    write(*,'(A45, F20.10)') 'Estimated Surface Roughness Ra (µm):', result%Ra
+    write(*,'(A45, A)') 'Thermal Zone:', trim(result%temp_zone)
+    write(*,'(A45, A)') 'Thermal Damage Risk:', trim(result%thermal_damage_risk)
+    print *, '--------------------------------------------------------------------------'
   end subroutine
 
 end program machining_simulator
